@@ -1,83 +1,9 @@
 import React, {Component} from 'react';
+import CalendarHeader from './Header';
+import DaysNameList from "./NameList";
 
-const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
-const getCurrentDateObject = (date) =>{
-     return {month: date.getMonth(), year: date.getFullYear(), day: date.getDate()}
-}
+import {fillMonthWithDays, splitDaysToWeeks, getMonthDays, getCurrentDateObject} from "../helpers/helpers"
 
-function CalendarHeader(props){
-   const {viewMonth, viewYear, prevClick, nextClick} = props;
-    return (<div className="header flex row">
-    <button className="btn prev" onClick={prevClick}></button>
-    <div className="row column auto-margin">{monthNames[viewMonth]} {viewYear}</div>
-    <button className="btn next" onClick={nextClick}></button>
-</div>);
-}
-
-function DaysNameList(props){
-    return (
-        <div className="days-list flex row">
-            <div className="day">Sun</div>
-            <div className="day">Mon</div>
-            <div className="day">Tue</div>
-            <div className="day">Wed</div>
-            <div className="day">Thu</div>
-            <div className="day">Fri</div>
-            <div className="day">Sat</div>
-        </div>
-    )
-}
-const getMonthDays = (month, year) =>{
-    if(month == -1 ){
-        month = 11;
-        year--;
-    }
-    if(month == 12 ){
-        month = 0;
-        year++;
-    }
-    const date = new Date(year, month, 1);
-    const days = new Array();
-    while (date.getMonth() === month) {
-       days.push(new Date(date));
-       date.setDate(date.getDate() + 1);
-    }
-    return days.map(day => ({date: day}));
-}
-const splitDaysToWeeks = (daysArray) =>{
-    const weeksArray = [];
-    let currentWeek = 0;
-    for(const day of daysArray){
-        if(!weeksArray[currentWeek]){
-            weeksArray.push(new Array());
-        }
-        weeksArray[currentWeek].push(day);
-        if(day.date.getDay() === 6){
-            currentWeek++;
-        }
-    }
-    return weeksArray;
-}
-const fillMonthWithDays = (weeksArray, month, year) => {
-    const weeks = weeksArray;
-    if(weeks[0].length < 7){
-        const previousMonthDays = getMonthDays(month - 1, year);
-        const daysNeeded  = 7 - weeks[0].length;
-        const daysNeededArray = previousMonthDays.slice((-1) * daysNeeded);
-        const markedDays = daysNeededArray.map(day => ({previous:true, ...day}));
-        weeks[0] = [ ...markedDays, ...weeks[0]];
-    }
-    if(weeks[weeks.length - 1].length < 7){
-        const previousMonthDays = getMonthDays(month + 1, year);
-        const daysNeeded  = 7 - weeks[weeks.length - 1].length;
-        const daysNeededArray = previousMonthDays.slice(0, daysNeeded);
-        const markedDays = daysNeededArray.map(day => ({next:true, ...day}));
-        weeks[weeks.length - 1] = [ ...weeks[weeks.length - 1], ...markedDays];
-    }
-return weeks;
-}
 class Calendar extends Component {
 
     constructor(props){
@@ -89,7 +15,6 @@ class Calendar extends Component {
     
     calculateDaysRows = () =>{
         const {viewMonth, viewYear} = this.state;
-        console.log(this.state)
         const dayList = getMonthDays(viewMonth, viewYear);
         const splittedList = splitDaysToWeeks(dayList);
         return splittedList;
