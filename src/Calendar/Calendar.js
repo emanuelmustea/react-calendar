@@ -27,7 +27,7 @@ class Calendar extends Component {
             const previousClass = (day.previous) ? "previous" : "";
             const nextClass = (day.next) ? "next" : "";
             const currentDate = new Date(currentYear, currentMonth, currentDay);
-            const activeClass = (currentDate.getTime() == day.date.getTime()) ? "active" : "";
+            const activeClass = (currentDate.getTime() === day.date.getTime()) ? "active" : "";
             const dayClasses = `day ${previousClass} ${nextClass} ${activeClass}`;
             daysList.push(<div key={i} onClick={()=>this.changeActiveDay(day)} className={dayClasses}>{day.date.getDate()}</div>);
             i++;

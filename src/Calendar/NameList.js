@@ -1,16 +1,12 @@
 
 import React from 'react';
+import {weekDays} from "../helpers/helpers"
 
 export default function DaysNameList(props){
+    const weekDaysDivs = weekDays.map(day=> <div key={day} className="day">{day}</div>)
     return (
         <div className="days-list flex row">
-            <div className="day">Sun</div>
-            <div className="day">Mon</div>
-            <div className="day">Tue</div>
-            <div className="day">Wed</div>
-            <div className="day">Thu</div>
-            <div className="day">Fri</div>
-            <div className="day">Sat</div>
+           {weekDaysDivs}
         </div>
     )
 }

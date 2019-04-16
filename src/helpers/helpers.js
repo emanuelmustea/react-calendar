@@ -1,21 +1,22 @@
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
+const weekDays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const getCurrentDateObject = (date) =>{
      return {month: date.getMonth(), year: date.getFullYear(), day: date.getDate()}
 }
 
 const getMonthDays = (month, year) =>{
-    if(month == -1 ){
+    if(month === -1 ){
         month = 11;
         year--;
     }
-    if(month == 12 ){
+    if(month === 12 ){
         month = 0;
         year++;
     }
     const date = new Date(year, month, 1);
-    const days = new Array();
+    const days = [];
     while (date.getMonth() === month) {
        days.push(new Date(date));
        date.setDate(date.getDate() + 1);
@@ -27,7 +28,7 @@ const splitDaysToWeeks = (daysArray) =>{
     let currentWeek = 0;
     for(const day of daysArray){
         if(!weeksArray[currentWeek]){
-            weeksArray.push(new Array());
+            weeksArray.push([]);
         }
         weeksArray[currentWeek].push(day);
         if(day.date.getDay() === 6){
@@ -54,4 +55,4 @@ const fillMonthWithDays = (weeksArray, month, year) => {
     }
 return weeks;
 }
-export {fillMonthWithDays, splitDaysToWeeks, getMonthDays, getCurrentDateObject, monthNames}
+export {fillMonthWithDays, splitDaysToWeeks, getMonthDays, getCurrentDateObject, monthNames, weekDays}
